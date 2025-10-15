@@ -1,0 +1,37 @@
+services:
+  backend:
+    build: ./backend
+    container_name: cadastro-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/contracts:/app/contracts
+    environment:
+      - DATABASE_URL=sqlite:///./data/database.db
+      - SIGNATURE_SERVICE=simulator
+      - PYTHONUNBUFFERED=1
+      # Configurações SMTP do Google (Gmail)
+      # IMPORTANTE: Configure estas variáveis com suas credenciais
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL:-}
+      - SMTP_FROM_NAME=Sistema de Contratos
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: cadastro-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=https://1cb317e6e77a.ngrok-free.app
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+networks:
+  default:
+    name: cadastro-network
+

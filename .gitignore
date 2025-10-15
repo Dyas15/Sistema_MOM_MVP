@@ -1,0 +1,51 @@
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Contratos gerados
+backend/contracts/*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Node
+node_modules/
+.pnp
+.pnp.js
+.next/
+out/
+build/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
