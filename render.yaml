@@ -1,0 +1,44 @@
+services:
+  # Backend (FastAPI)
+  - type: web
+    name: cadastro-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./data/database.db
+      - key: SIGNATURE_SERVICE
+        value: simulator
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_FROM_EMAIL
+        sync: false
+      - key: SMTP_FROM_NAME
+        value: Sistema de Contratos
+
+  # Frontend (Next.js)
+  - type: web
+    name: cadastro-frontend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: "cd frontend && corepack enable pnpm && pnpm install && pnpm run build"
+    startCommand: "cd frontend && npx next start -p $PORT"
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: cadastro-backend
+          envVarKey: RENDER_EXTERNAL_URL
+
